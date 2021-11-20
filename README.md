@@ -16,12 +16,11 @@ Two easy steps:
 2. Set the filter that you would like to use in the log cat.   
 3. Set the flags that determine the amount of verbose in the logs.
     
-   ` 
-   if(BuildConfig.DEBUG) {
-        Snippet.install(new Snippet.MeasuredExecutionPath());
-        Snippet.newFilter("SomeFilter");
-        Snippet.addFlag(Snippet.FLAG_METADATA_LINE | Snippet.FLAG_METADATA_THREAD_INFO);
-   }
+   `if(BuildConfig.DEBUG) { `
+        `Snippet.install(new Snippet.MeasuredExecutionPath());`
+        `Snippet.newFilter("SomeFilter");`
+        `Snippet.addFlag(Snippet.FLAG_METADATA_LINE | Snippet.FLAG_METADATA_THREAD_INFO);`
+  `}` 
    `
 Check out the sample app in `app/` to see it in action.
 
