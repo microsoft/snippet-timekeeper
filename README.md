@@ -1,14 +1,30 @@
-# Project
+# Snippet
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+> Snippet is a small extensible library to measure execution times of the code sections
+> in a way that does not compromise with the readability and can be shipped to production 
+> without any additional setup.
 
-As the maintainer of this project, please make a few updates:
+> New behaviors can be added in the library by extending 
+> MeasuredExecutionPath - The code path the does the measurement code spans
+> ReleaseExecutionPath - A no-op path (default path) that is usually installed in the release variants.
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+## Usage
+
+Two easy steps:
+
+1. Install the `MeasuredExecutionPath` instance you want in the `onCreate` of your application class.
+2. Set the filter that you would like to use in the log cat.   
+3. Set the flags that determine the amount of verbose in the logs.
+    
+   ` 
+   if(BuildConfig.DEBUG) {
+        Snippet.install(new Snippet.MeasuredExecutionPath());
+        Snippet.newFilter("SomeFilter");
+        Snippet.addFlag(Snippet.FLAG_METADATA_LINE | Snippet.FLAG_METADATA_THREAD_INFO);
+   }
+   `
+Check out the sample app in `app/` to see it in action.
+
 
 ## Contributing
 
