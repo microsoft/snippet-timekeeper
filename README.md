@@ -17,7 +17,7 @@
 6. APK size impact of 23KB
 7. Designed to be thread safe & null safe
 8. Rich API
-9. Fully documented, just run java docs!
+9. Fully documented, just run java docs! Working on a hosted documentation.
 
 # Vocabulary
 1. Capture: Logical span of code. Can be contiguous or non-contiguous
