@@ -1,12 +1,13 @@
 # Snippet
 
-> Snippet is a small extensible library to measure execution times of the code sections
-> in a way that does not compromise with the readability and can be shipped to production
-> without any additional setup.
+Snippet is a small extensible Android library to measure execution times of the code sections
+in a way that does not compromise with the readability and can be shipped to production
+without any additional setup.
 
-> New behaviors can be added in the library by extending
-> MeasuredExecutionPath - The code path the does the measurement code spans
-> ReleaseExecutionPath - A no-op path (default path) that is usually installed in the release variants.
+New behaviors can be added in the library by extending
+
+- MeasuredExecutionPath - The code path the does the measurement code spans
+- ReleaseExecutionPath - A no-op path (default path) that is usually installed in the release variants.
 
 # Features
 1. Easy to integrate and configure
@@ -20,6 +21,7 @@
 9. Fully documented, just run java docs! Working on a hosted documentation.
 
 # Vocabulary
+
 1. Capture: Logical span of code. Can be contiguous or non-contiguous
 2. Splits: Sections of code in b/w a capture, measures the delta from last split.
 3. LogToken: Tracks noncontiguous captures.
