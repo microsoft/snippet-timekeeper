@@ -1,42 +1,42 @@
-
-# Snippet
-
+﻿
+# Snippet  
+  
 > Snippet is a small extensible android library to measure execution times of the code sections  
 > in a way that does not compromise with the readability and can be shipped to production  
-> without any additional setup.
-
+> without any additional setup.  
+  
 > New behaviours can be added in the library by extending  
 > MeasuredExecutionPath - The code path the does the measurement code spans  
-> ReleaseExecutionPath - A no-op path (default path) that is usually installed in the release variants.
-
-# Features
-1. <b> Easy to integrate and configure  
-2. <b> Switch behavior depending on build type  
-3. <b> Reduces boiler plate  
-4. <b> Data reuse  
-5. <b> Makes PR reviews more quantitative  
-6. <b> APK size impact of 23KB  
-7. <b> Designed to be thread safe & null safe  
-8. <b> Rich API  
-9. <b> Fully documented, just run java docs!  
-
-# Vocabulary
+> ReleaseExecutionPath - A no-op path (default path) that is usually installed in the release variants.  
+  
+# Features  
+1. <b> Easy to integrate and configure </b>
+2. <b> Switch behavior depending on build type  </b>
+3. <b> Reduces boiler plate  </b>
+4. <b> Data reuse </b>  
+5. <b> Makes PR reviews more quantitative </b>
+6. <b> APK size impact of 23KB  </b>
+7. <b> Designed to be thread safe & null safe  </b>
+8. <b> Rich API  </b>
+9. <b> Fully documented, just run java docs!  </b>
+  
+# Vocabulary  
 1. <b> Capture </b> : Logical span of code. Can be contiguous or non-contiguous. 
 2. <b> Splits </b> : Sections of code in b/w a capture, measures the delta from last split.  
 3. <b> LogToken</b> : Tracks noncontiguous captures.  
 4. <b> Execution Path </b> : An abstraction to route the execution inside the library . Custom paths can be written for user additional add on functionalities and could be installed on different build versions.
-5. <b> Thread Locks </b> : Thread starting the measurement should end it  
-
-## Usage
-
-Two easy steps:
-
-1. Install the desired `ExecutionPath`  ,  in the `onCreate` of your application class **as early as possible**. Prior to that `Snippet` APIs will not have any effect as snippet ships with the default execution path that is no-op path. For usual purposes use `MeasuredExecutionPath`
+5. <b> Thread Locks </b> : Thread starting the measurement should end it.
+  
+## Usage  
+  
+Two easy steps:  
+  
+1. Install the desired `ExecutionPath`  ,  in the `onCreate` of your application class **as early as possible**. Prior to that `Snippet` APIs will not have any effect as snippet ships with the default execution path that is no-op path. For usual purposes use `MeasuredExecutionPath` 
 2. Set the filter that you would like to use in the log cat using `newFilter` method, default filter is "**Snippet**"
-3. Set the flags that determine the amount of verbose in the logs using `addFlag` method. The flags that Snippet supports are, `FLAG_METADATA_CLASS`, `FLAG_METADATA_METHOD`, `FLAG_METADATA_LINE`, `FLAG_METADATA_THREAD_INFO`. Some of the filters are added by default.
+3. Set the flags that determine the amount of verbose in the logs using `addFlag` method. The flags that Snippet supports are, `FLAG_METADATA_CLASS`, `FLAG_METADATA_METHOD`, `FLAG_METADATA_LINE`, `FLAG_METADATA_THREAD_INFO`. Some of the filters are added by default. 
 
 **Below is the sample setup code:**
-
+ 
 
        if(BuildConfig.DEBUG) {  
             Snippet.install(new Snippet.MeasuredExecutionPath());  
@@ -45,22 +45,22 @@ Two easy steps:
         }
 We can create multiple execution path implementations by extending MeasuredExecutionPath classes, and do additional work with the data that is provided by the measured path such as logging it in remote servers, putting all the data to a DB, files etc. Check `FileExecutionPath` in the sample app.
 
-**There are 3 ways to capture the code path.**
+**There are 3 ways to capture the code path.**  
 1. `Snippet.capture(Closure closure)` - For continuous section of code, pass code as lambda inside the closure.
 2. `Snippet.startCapture()/LogToken.endCapture()` - For non contiguous sections of code possibly inside the same file . Or places where `capture(closure)` does not work as in case of some anonymous inner classes.
 3. `Snippet.startCapture(String tag)/Snippet.find(tag).endCapture()` - For code flows spanning over multiple files. ex. you have started a measurement in `Application.onCreate()` and end the measurement on the landing activity. Use `Snippet.startCapture(tag)` to start the measurement and find the token using `Snippet.find(tag)` and call `endCapture()` on that.
-
-
-Check out the sample app in `app/` to see it in action.
-
-
+  
+  
+Check out the sample app in `app/` to see it in action.  
+  
+  
 
 ## Splits
 
 **Splits** can be defined as a logical span of code within a capture. Splits can span within same file or different files. The purpose is to double down on the focussed areas, and help in debugging. It could be used for seeing what is the contribution of a small portion of code within a capture and find of problem areas.
-**It is advisable to always use splits only for debugging purposes.**
-**It is not advised to ship splits related code to production.**
-
+ **It is advisable to always use splits only for debugging purposes.**
+ **It is not advised to ship splits related code to production.** 
+ 
 **How to use splits**
 1. Once you get a log token using `Snippet.startCapture()` call.
 2. You can call `logtoken.addSplit()` call. It will print the amount of time that has passed since the last call to `addSplit()` was made or if it is a first split then it will measure the time from the call to `startCapture().`
@@ -78,14 +78,14 @@ Thread lock is the functionality where the thread that started the measurement u
 
 ## ExecutionPaths
 
-* Execution path determines how core the functionality of this library should behave.
-* It might be possible that we do not want to execute the code entirely in release builds or
-* may want to add some extra information into the existing information and add it to files.
+* Execution path determines how core the functionality of this library should behave.  
+* It might be possible that we do not want to execute the code entirely in release builds or  
+* may want to add some extra information into the existing information and add it to files.  
 * We can plugin a custom execution path or method through `Snippet.install(executionPath)` method.
 
 Snippet comes with a `MeasuredExecutionPath` & `ReleaseExecutionPath` , measured path is the one that routes the the Snippet API calls to the core library functionality, but `ReleaseExecutionPath` make Snippet no-op. Release path is the default path for Snippet. User has to set the path for specific build types using `Snippet.install(executionPath)`
 
-
+   
 
        if(BuildConfig.DEBUG) {  
        // For debug builds prints the measurements
@@ -100,12 +100,12 @@ Snippet comes with a `MeasuredExecutionPath` & `ReleaseExecutionPath` , measured
 
 ## Writing a custom execution path
 
-1. Extend `ExecutionPath`, in our example we will extend `MeasuredExecutionPath`.
-2. Override `ExecutionPath#capture(Closure)` and  `ExecutionPath#capture(String, Closure)`          This will make sure that you are implementing a custom code for lambda based API.
+ 1. Extend `ExecutionPath`, in our example we will extend `MeasuredExecutionPath`.
+ 2. Override `ExecutionPath#capture(Closure)` and  `ExecutionPath#capture(String, Closure)`          This will make sure that you are implementing a custom code for lambda based API.  
 3. You need to provide a custom log token also and override the `LogToken#endCapture()` and `LogToken#endCapture(String)` so that you can perform the custom actions on all types(contiguous/non contiguous) of code.
-4. For doing this extend  ExtendableLogToken and override  `ExtendableLogToken#endCapture(String)`, and  `ExtendableLogToken#endCapture()`. Once done, return the `ExtendableLogToken` instance from  `Snippet#startCapture(String)`, and  `Snippet#startCapture(String)` methods.
+4. For doing this extend  ExtendableLogToken and override  `ExtendableLogToken#endCapture(String)`, and  `ExtendableLogToken#endCapture()`. Once done, return the `ExtendableLogToken` instance from  `Snippet#startCapture(String)`, and  `Snippet#startCapture(String)` methods.  
 
-**NOTE**: In almost all the cases, every new execution path that would be created, would require a new  extension of `ExtendableLogToken`
+ **NOTE**: In almost all the cases, every new execution path that would be created, would require a new  extension of `ExtendableLogToken`
 
 Sample:
 
@@ -190,24 +190,25 @@ Finally, install it at the application create,
 
 Cheers,
 
-## Contributing
-
+## Contributing  
+ 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a  
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us  
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
-
+the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.  
+  
 When you submit a pull request, a CLA bot will automatically determine whether you need to provide  
 a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions  
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
+provided by the bot. You will only need to do this once across all repos using our CLA.  
+  
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).  
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or  
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-## Trademarks
-
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.  
+  
+## Trademarks  
+  
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft  
 trademarks or logos is subject to and must follow  
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).  
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.  
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
