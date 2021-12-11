@@ -6,6 +6,8 @@ package com.microsoft.snippet;
 
 import android.util.Log;
 
+import androidx.annotation.RestrictTo;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -18,6 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @param <T>
  * @author vishalratna
  */
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class OneShot<T> {
     private static final String TAG = OneShot.class.getSimpleName();
 

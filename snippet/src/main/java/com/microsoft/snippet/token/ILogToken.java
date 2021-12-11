@@ -34,14 +34,15 @@ public interface ILogToken {
     ExecutionContext endCapture(String message);
 
     /**
+     * ThreadLock: It is a restriction that could be implemented on a log token level where the user
+     * could say that the thread that starts the measurement should only be the one that ends the measurement.
      * Returns the id of the thread that asked for this log token.
-     *
      * @return Thread ID.
      */
     long creatorThreadId();
 
     /**
-     *
+     * Returns whether a thread lock is enabled or not.
      */
     boolean isThreadLockEnabled();
 

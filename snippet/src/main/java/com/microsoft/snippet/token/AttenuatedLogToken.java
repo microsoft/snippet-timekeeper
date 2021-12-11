@@ -4,6 +4,8 @@
 
 package com.microsoft.snippet.token;
 
+import androidx.annotation.RestrictTo;
+
 import com.microsoft.snippet.ExecutionContext;
 
 /**
@@ -18,6 +20,7 @@ import com.microsoft.snippet.ExecutionContext;
  * some activity. As application onCreate() will not be called always, activity might need a
  * null check after find call, that is avoided by the use of this class.
  */
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class AttenuatedLogToken implements ILogToken {
     private static final ExecutionContext NONE_INFO = new ExecutionContext();
 

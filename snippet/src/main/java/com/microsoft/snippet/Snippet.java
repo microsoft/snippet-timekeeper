@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.microsoft.snippet.token.AttenuatedLogToken;
+import com.microsoft.snippet.token.ExtendableLogToken;
 import com.microsoft.snippet.token.ILogToken;
 import com.microsoft.snippet.token.LogTokenState;
 
@@ -27,12 +28,21 @@ import java.util.Locale;
  * printing the logs. The work is tedious and it becomes a nightmare when we have to do it across the
  * code base. The API provided by this library could be used to monitor PRs in the PR reviews where
  * the reviewer could ask for numbers for a specific snippet and compare the before and after numbers.
+ * It could also be used as a general library to print code execution duration.
+ * <p>
+ * The important thing to note is we can configure the code in such a way that we do not have to
+ * care about the additional verbosity in the release builds as it automatically makes the code
+ * no-op in the release builds or any other builds if we want. We also have an option to configure the library
+ * differently in different builds. Please check {@link Snippet#install(ExecutionPath)} API.
+ *
  * <h2> There are 2 ways to measure time in Snippet</h2>
  * <ol>
  *     <li> Using <code>capture</code> APIs of Snippet</li>
  *     <li> Using log tokens and <code>startCapture</code> and <code>endCapture</code> APIs </li>
  * </ol>
  * <p>
+ * Snippet's capture() API accepts a lambda and measures the time it takes to execute it and logs it
+ * on the log cat.
  * Example usage with <code>Snippet.capture</code>:
  * <pre>
  * {@code
@@ -64,10 +74,12 @@ import java.util.Locale;
  * Here library is going to measure time used to execute the code represented by the underlying lambda.
  * <p>
  * When you intent to measure the execution times for code which is not spread across multiple
- * methods and classes, capture APIs can be used. There is one caveat though, while capturing, we pass
+ * methods and classes, capture() API can be used. There is one caveat though, while capturing, we pass
  * a lambda for the closure representing the code snippet, this might be a problem if we want to capture
  * some non final variables outside the scope of lambda(Java does not support that). For that use, {@link Final} to create a
  * wrapper around your variable and use {@link Final#get()} and {@link Final#set(Object)}()} methods.
+ * This is tedious though, but if you want to use the capture based approach this is the way out. The new
+ * approach for this use case is described in the next section.
  * <p>
  * Another approach is through {@link Snippet#startCapture()} & {@link LogToken#endCapture()} APIs.
  * <code>startCapture</code> is going to return a token representing your execution it can be passed
@@ -97,7 +109,7 @@ import java.util.Locale;
  * </pre>
  * We can use <code>startCapture()</code> method with a TAG also. This is particularly useful when
  * the execution is spread across multiple classes. We can use, {@link Snippet#find(String)} to find
- * the log token that was created with this tag. The logtoken received can be then used normally.
+ * the log token that was created with this tag. The log token received can be then used normally.
  * {@link LogToken} objects are internally obtained through a pool so, Snippet tries it best to
  * recycle the objects again and again.
  * <p>
@@ -106,7 +118,7 @@ import java.util.Locale;
  * While this is global filter for all the logs, you can still choose to have a different filter for a
  * particular LogToken using {@link LogToken#overrideFilter(String)} which will override the global filter.
  * <p>
- * Snippet can print Class, Method and Line number information in the logs as a part of execution
+ * Snippet can print class, method and line number information in the logs as a part of execution
  * context. By default it prints class and method name. You can choose to have your combination of
  * details through {@link Snippet#addFlag(int)}
  * <b>Valid options are:</b>
@@ -133,20 +145,52 @@ import java.util.Locale;
  *     {@link LogToken#isThreadLockEnabled()} can be used.
  * </p>
  *
- * <p>
+ * <p> There is a interesting concept of splits:
  *     There are times while you are measuring a sequence of code and you would like to measure how
  *     much time some steps take within that sequence. As an example, while you are measuring some
  *     method that takes 300ms to execute, it could have multiple areas inside it that could be adding up
  *     to that number. So, to measure that {@link LogToken#addSplit()} and {@link LogToken#addSplit(String)}
  *     could be used. Each call to add split print the time takes since the last addSplit() was called.
  *     If addSplit() is called for the first time, then it would measure the time from startCapture().
+ *     Once the endCapture() is called and there are {@link Split} inside your capture, snippet also prints
+ *     a clean split summary that shows what was the fraction of time each split took to give an overall idea to
+ *     the user.
+ * </p>
+ *
+ * <p>
+ *     Snippet also introduces a concept of {@link ExecutionPath}. It is a routing mechanism where, it
+ *     tell the library the way to route its code. Whenever an Snippet API is called, it relays it to an execution path.
+ *     That directs it to the core library functionality. So, this provides a capability where the user can
+ *     provide custom execution path implementations and make Snippet run their own code. It also provides a
+ *     mechanism to run different execution paths in different build types. Just add a check for your build type and
+ *     install the execution path that you want using {@link Snippet#install(ExecutionPath)} method.
+ * <p>
+ *     If your aim is to do the measurement then {@link MeasuredExecutionPath} is already shipped with Snippet.
+ *     Any additional work could be added by extending {@link MeasuredExecutionPath}.
+ *
+ *    <b> Steps to implement a custom path. See FileExecutionPath in the github sample app for a demo.</b>
+ *     1. Extend ExecutionPath, in our example we will extend MeasuredExecutionPath.
+ *     2. Override {@link ExecutionPath#capture(Closure)} and {@link ExecutionPath#capture(String, Closure)}
+ *     This will make sure that you are implementing a custom code for lambda based API.
+ *     3. There are non-contiguous areas of code also, to address that we have {@link Snippet#startCapture()}
+ *     {@link Snippet#startCapture(String)} APIs, that returns a log token, so if you are writing a new execution path
+ *     you need to provide a custom log token also and the {@link LogToken#endCapture()} and {@link LogToken#endCapture(String)}
+ *     so that you can perform the custom actions on all types of code. For doing this extend
+ *     {@link com.microsoft.snippet.token.ExtendableLogToken} and override
+ *     {@link com.microsoft.snippet.token.ExtendableLogToken#endCapture(String)}, and
+ *     {@link ExtendableLogToken#endCapture()}. Once done, return the ExtendableLogToken instance from
+ *     {@link Snippet#startCapture(String)}, and {@link Snippet#startCapture(String)} methods.
+ *
+ *     NOTE: In almost all the cases, every new execution path that would be created, would require a new
+ *     extension of {@link ExtendableLogToken}
  * </p>
  *
  * @author vishalratna
  */
 public final class Snippet {
+
+    public static final AttenuatedLogToken NO_OP_TOKEN = new AttenuatedLogToken();
     private static final String TAG = LogToken.class.getSimpleName();
-    static final AttenuatedLogToken NO_OP_TOKEN = new AttenuatedLogToken();
     private static final ExecutionContext EMPTY_CONTEXT = new ExecutionContext();
     public static final int FLAG_METADATA_CLASS = 1 << 31;
     public static final int FLAG_METADATA_METHOD = 1 << 30;
@@ -514,7 +558,7 @@ public final class Snippet {
             this.mFilter = Snippet.primaryFilter;
             this.mThreadId = -1L;
             this.mThreadLockEnabled = false;
-            if(this.mSplitRecord != null) {
+            if (this.mSplitRecord != null) {
                 this.mSplitRecord.clear();
             }
             this.mSplitRecord = null;

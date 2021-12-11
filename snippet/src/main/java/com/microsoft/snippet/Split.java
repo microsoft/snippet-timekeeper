@@ -1,7 +1,19 @@
 package com.microsoft.snippet;
 
+import androidx.annotation.RestrictTo;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Split is a sub section of code within a capture( a contiguous/non-contiguous section of code).
+ * It is used to measure the duration of subsections and helps in double clicking the areas that are
+ * are creating problems.
+ *
+ * It is advised to use this only for debugging and investigation purposes. Though in release execution path
+ * all these {@link Snippet.LogToken#addSplit()} calls are noop and none will be coming to your release builds.
+ * But according our understanding it should not be shipped to production. It would make your code look dirty!
+ */
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public class Split {
 
     private static final AtomicInteger SEQUENCE = new AtomicInteger(1);

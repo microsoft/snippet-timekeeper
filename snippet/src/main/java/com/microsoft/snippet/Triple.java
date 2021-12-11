@@ -4,6 +4,8 @@
 
 package com.microsoft.snippet;
 
+import androidx.annotation.RestrictTo;
+
 /**
  * Represents a Triple of objects
  *
@@ -11,6 +13,7 @@ package com.microsoft.snippet;
  * @param <B> B
  * @param <C> C
  */
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class Triple<A, B, C> {
     A a;
     B b;

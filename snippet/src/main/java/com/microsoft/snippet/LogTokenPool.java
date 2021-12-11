@@ -7,6 +7,7 @@ package com.microsoft.snippet;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 
 import com.microsoft.snippet.token.ILogToken;
 import com.microsoft.snippet.token.LogTokenState;
@@ -17,7 +18,10 @@ import java.util.List;
 
 /**
  * LogToken Pool is helps recycling the log token objects that are used by Snippet.
+ * Currently there is no upper cap on the no of tokens it could hold. But we are trying to understand
+ * what could be the upper limit.
  */
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class LogTokenPool {
     private static final String TAG = LogTokenPool.class.getSimpleName();
 

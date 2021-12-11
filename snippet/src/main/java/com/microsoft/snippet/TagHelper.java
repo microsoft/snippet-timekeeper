@@ -7,6 +7,7 @@ package com.microsoft.snippet;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 
 import com.microsoft.snippet.token.ILogToken;
 
@@ -20,6 +21,7 @@ import java.util.Set;
  *
  * @author vishalratna
  */
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 class TagHelper implements ILogTokenSearcher {
     private static final String LOG_TAG = TagHelper.class.getSimpleName();
 

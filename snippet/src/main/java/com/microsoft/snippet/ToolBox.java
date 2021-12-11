@@ -6,11 +6,14 @@ package com.microsoft.snippet;
 
 import android.os.SystemClock;
 
+import androidx.annotation.RestrictTo;
+
 import com.microsoft.snippet.token.ILogToken;
 
 /**
  * Utility class the houses some helper functions used across the library.
  */
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 final class ToolBox {
 
     private ToolBox() {

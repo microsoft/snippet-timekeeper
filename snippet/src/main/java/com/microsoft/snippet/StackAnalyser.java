@@ -4,11 +4,14 @@
 
 package com.microsoft.snippet;
 
+import androidx.annotation.RestrictTo;
+
 /**
  * Internal helper class used to extract the execution context of the code which was guarded
  * by Snippet APIs.
  * NOT FOR EXTERNAL USE
  */
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 final class StackAnalyser {
     static final int API_CAPTURE = 0;
     static final int API_LOG_TOKEN = 1;

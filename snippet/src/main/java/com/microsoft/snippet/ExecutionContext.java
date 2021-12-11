@@ -1,8 +1,10 @@
 package com.microsoft.snippet;
 
 /**
+ * POJO Alert!
  * Wraps all the information that can be returned through the library.
- * If any other information is needed it can be added ad-hoc.
+ * Custom implementation of {@link ExecutionPath} might/might not have to extend this to
+ * accommodate any additional information.
  */
 public class ExecutionContext {
     private String mClass;
