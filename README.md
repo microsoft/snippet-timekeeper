@@ -36,9 +36,9 @@ Setup in 3 easy steps:
   
 
      if(BuildConfig.DEBUG) {             
-		    Snippet.install(new Snippet.MeasuredExecutionPath());      
-                    Snippet.newFilter("SampleFilter");      
-                    Snippet.addFlag(Snippet.FLAG_METADATA_LINE | Snippet.FLAG_METADATA_THREAD_INFO);      
+	Snippet.install(new Snippet.MeasuredExecutionPath());      
+        Snippet.newFilter("SampleFilter");      
+        Snippet.addFlag(Snippet.FLAG_METADATA_LINE | Snippet.FLAG_METADATA_THREAD_INFO);      
     }   
 
 ## How to measure the a piece of code.  
