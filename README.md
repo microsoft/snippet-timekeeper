@@ -10,20 +10,20 @@
 > ReleaseExecutionPath - A no-op path (default path) that is usually installed in the release variants.  
   
 # Features  
-**1**. Easy to integrate and configure.
-**2**. Switch behavior depending on build type.
-**3**. Reduces boiler plate.
-**4**. Data reuse
-**5**. Makes PR reviews more quantitative
-**6**. APK size impact of 23KB
-**7**. Designed to be thread safe & null safe
-**8**. Rich API
-**9**. Fully documented, just run java docs!
+1. <b> Easy to integrate and configure </b>
+2. <b> Switch behavior depending on build type  </b>
+3. <b> Reduces boiler plate  </b>
+4. <b> Data reuse </b>  
+5. <b> Makes PR reviews more quantitative </b>
+6. <b> APK size impact of 23KB  </b>
+7. <b> Designed to be thread safe & null safe  </b>
+8. <b> Rich API  </b>
+9. <b> Fully documented, just run java docs!  </b>
   
 # Vocabulary  
 1. <b> Capture </b> : Logical span of code. Can be contiguous or non-contiguous. 
 2. <b> Splits </b> : Sections of code in b/w a capture, measures the delta from last split.  
-3. <b> LogToken</b> : Tracks non contiguous captures.  
+3. <b> LogToken</b> : Tracks noncontiguous captures.  
 4. <b> Execution Path </b> : An abstraction to route the execution inside the library . Custom paths can be written for user additional add on functionalities and could be installed on different build versions.
 5. <b> Thread Locks </b> : Thread starting the measurement should end it.
   
