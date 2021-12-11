@@ -286,7 +286,7 @@ Add the dependency to your project and replace tag with the release tag in the g
 ```css
 dependencies {
 	implementation 'com.github.microsoft:snippet-timekeeper:Tag'
-    }
+}
 ```
 Cheers,  
   
