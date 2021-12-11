@@ -10,15 +10,15 @@
 > ReleaseExecutionPath - A no-op path (default path) that is usually installed in the release variants.  
   
 # Features  
-**1**. Easy to integrate and configure
-**1**. Switch behavior depending on build type 
-**1**. Reduces boiler plate  
-**1**. Data reuse 
-**1**. Makes PR reviews more quantitative
-**1**. APK size impact of 23KB  
-**1**. Designed to be thread safe & null safe  
-**1**. Rich API 
-**1**. Fully documented, just run java docs!  
+**1**. Easy to integrate and configure.
+**2**. Switch behavior depending on build type.
+**3**. Reduces boiler plate.
+**4**. Data reuse
+**5**. Makes PR reviews more quantitative
+**6**. APK size impact of 23KB
+**7**. Designed to be thread safe & null safe
+**8**. Rich API
+**9**. Fully documented, just run java docs!
   
 # Vocabulary  
 1. <b> Capture </b> : Logical span of code. Can be contiguous or non-contiguous. 
