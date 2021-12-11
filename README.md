@@ -272,22 +272,6 @@ Finally, install it at the application create,
     Snippet.install(new FileExecutionContext());
      }    
 
-## Downloads
-Add it in your root build.gradle at the end of repositories:
-```css
-allprojects {
-	repositories {
-		...
-		maven { url 'https://jitpack.io' }
-	}
-}
-```
-Add the dependency to your project and replace tag with the release tag in the git repository
-```css
-dependencies {
-	implementation 'com.github.microsoft:snippet-timekeeper:Tag'
-}
-```
 Cheers,  
   
 ## Contributing  
@@ -321,3 +305,21 @@ trademarks or logos is subject to and must follow
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion  
 or imply Microsoft sponsorship.      
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
+
+## Downloads
+Add it in your root build.gradle at the end of repositories:
+```css
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
+}
+```
+Add the dependency to your project and replace tag with the release tag in the git repository
+```css
+dependencies {
+	implementation 'com.github.microsoft:snippet-timekeeper:Tag'
+}
+```
