@@ -280,13 +280,13 @@ allprojects {
 			...
 			maven { url 'https://jitpack.io' }
 		}
-	}
+}
 ```
 Add the dependency to your project and replace tag with the release tag in the git repository
 ```css
 dependencies {
 	        implementation 'com.github.microsoft:snippet-timekeeper:Tag'
-	}
+}
 ```
 Cheers,  
   
