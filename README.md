@@ -36,7 +36,7 @@ Setup in 3 easy steps:
   
 
      if(BuildConfig.DEBUG) {             
-				    Snippet.install(new Snippet.MeasuredExecutionPath());      
+		    Snippet.install(new Snippet.MeasuredExecutionPath());      
                     Snippet.newFilter("SampleFilter");      
                     Snippet.addFlag(Snippet.FLAG_METADATA_LINE | Snippet.FLAG_METADATA_THREAD_INFO);      
     }   
@@ -217,60 +217,63 @@ Snippet.addFlag(Snippet.FLAG_METADATA_LINE | Snippet.FLAG_METADATA_THREAD_INFO);
         }      
           
      @NonNull      
-     @Override  public ExecutionContext capture(String message, Snippet.Closure closure) {      
-            ExecutionContext context = super.capture(message, closure);      
-            Log.d("Snippet", "Class: " + context.getClassName() + "Duration: " + context.getExecutionDuration());      
-            // Context has all the information that measured path has captured. Use that to write to files.      
-            return writeToFile(context);      
-        }      
+     @Override  
+     public ExecutionContext capture(String message, Snippet.Closure closure) {      
+     	ExecutionContext context = super.capture(message, closure);      
+        Log.d("Snippet", "Class: " + context.getClassName() + "Duration: " + context.getExecutionDuration());      
+        // Context has all the information that measured path has captured. Use that to write to files.      
+        return writeToFile(context);      
+     }      
           
-        private ExecutionContext writeToFile(ExecutionContext context) {      
-            // Code to write to a file goes here, create a thread and write.      
-            // Finally return a the execution context(could be the same or a new implementation) with some // of the details that you captured.      
-            // NOTE: always put the relevant information on the context before you start doing IO // so that the execution path could return successfully.  
-	    return context;      
-        }      
+     private ExecutionContext writeToFile(ExecutionContext context) {      
+        // Code to write to a file goes here, create a thread and write.      
+        // Finally return a the execution context(could be the same or a new implementation) with some // of the details that you captured.      
+        // NOTE: always put the relevant information on the context before you start doing IO // so that the execution path could return successfully.  
+	return context;      
+     }      
           
      @NonNull      
      @Override  public ExecutionContext capture(Snippet.Closure closure) {      
             return super.capture(closure);      
-        }      
+     }      
           
-      // We need to return a log token implementation that writes to a file when we call endCapture()      
-      // APIs. // USE ExtendableLogToken for the above purpose  @Override      
-      public ILogToken startCapture() {      
-            return new ExtendableLogToken(super.startCapture());      
-        }      
+     // We need to return a log token implementation that writes to a file when we call endCapture()      
+     // APIs. 
+     // USE ExtendableLogToken for the above purpose  @Override      
+     public ILogToken startCapture() {      
+           return new ExtendableLogToken(super.startCapture());      
+     }      
           
-      @Override      
-      public ILogToken find(String tag) {      
-            return super.find(tag);      
-        }      
+     @Override      
+     public ILogToken find(String tag) {      
+          return super.find(tag);      
+     }      
           
-        public class FileWritingLogToken extends ExtendableLogToken {      
+     public class FileWritingLogToken extends ExtendableLogToken {      
           
-            public FileWritingLogToken(ILogToken logToken) {      
-                super(logToken);      
-            }      
+         public FileWritingLogToken(ILogToken logToken) {      
+             super(logToken);      
+         }      
           
-            @Override      
-            public ExecutionContext endCapture(String message) {      
-               ExecutionContext context = super.endCapture(message);      
-               writeToFile(context);      
-               return context;      
-            }      
+         @Override      
+         public ExecutionContext endCapture(String message) {      
+            ExecutionContext context = super.endCapture(message);      
+            writeToFile(context);      
+            return context;      
+         }      
           
-            @Override      
-            public ExecutionContext endCapture() {      
-                ExecutionContext context = super.endCapture();      
-                writeToFile(context);      
-                return context;      
-            }      
-        }      
+         @Override      
+         public ExecutionContext endCapture() {      
+            ExecutionContext context = super.endCapture();      
+            writeToFile(context);      
+            return context;      
+         }      
+    }      
 }   
-     Finally, install it at the application create,  
-  
 
+
+Finally, install it at the application create,  
+  
     if(Build.DEBUG) { 
     Snippet.install(new FileExecutionContext());
      }    
