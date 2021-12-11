@@ -35,7 +35,7 @@ Setup in 3 easy steps:
 **Below is the sample setup code:**  
   
 
-     if(BuildConfig.DEBUG) {             
+     if(BuildConfig.DEBUG) { 
 	Snippet.install(new Snippet.MeasuredExecutionPath());      
         Snippet.newFilter("SampleFilter");      
         Snippet.addFlag(Snippet.FLAG_METADATA_LINE | Snippet.FLAG_METADATA_THREAD_INFO);      
