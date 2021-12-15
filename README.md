@@ -274,9 +274,10 @@ Snippet.addFlag(Snippet.FLAG_METADATA_LINE | Snippet.FLAG_METADATA_THREAD_INFO);
 
 Finally, install it at the application create,  
   
-    if(Build.DEBUG) { 
+```    if(Build.DEBUG) { 
     Snippet.install(new FileExecutionContext());
      }    
+````
 
 Cheers,  
   
@@ -318,14 +319,14 @@ Add it in your root build.gradle at the end of repositories:
 ```css
 allprojects {
 	repositories {
-		...
-		maven { url 'https://jitpack.io' }
+	      ...
+	      maven { url 'https://jitpack.io' }
 	}
 }
 ```
 Add the dependency to your project and replace tag with the release tag in the git repository
 ```css
 dependencies {
-	implementation 'com.github.microsoft:snippet-timekeeper:Tag'
+    implementation 'com.github.microsoft:snippet-timekeeper:Tag'
 }
 ```
