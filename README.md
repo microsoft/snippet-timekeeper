@@ -1,5 +1,6 @@
 ﻿
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-snippet--timekeeper-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/8263)
+ 
+[![Android Weekly #498](https://androidweekly.net/issues/issue-498/badge)](https://androidweekly.net/issues/issue-498) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-snippet--timekeeper-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/8263)
 
 # Snippet  
   
