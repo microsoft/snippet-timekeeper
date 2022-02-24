@@ -19,6 +19,7 @@ import com.microsoft.snippet.token.LogTokenState;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -492,6 +493,7 @@ public final class Snippet {
         private volatile LogTokenState mState;
         private long mLastSplitTimeCaptured = 0L;
         private List<Split> mSplitRecord;
+        private final AtomicInteger mSequenceNumber = new AtomicInteger(1);
 
         // To be called only through LogTokenPool. Should not be created through any other ways.
         protected LogToken() {
@@ -561,6 +563,8 @@ public final class Snippet {
             if (this.mSplitRecord != null) {
                 this.mSplitRecord.clear();
             }
+            this.mSequenceNumber.set(1);
+            this.mLastSplitTimeCaptured = 0L;
             this.mSplitRecord = null;
         }
 
@@ -614,11 +618,11 @@ public final class Snippet {
                 if (mLastSplitTimeCaptured == 0L) {  // Split called for the first time
                     // We use the token start time as the reference.
                     mLastSplitTimeCaptured = ToolBox.currentTime();
-                    newSplit = new Split(getStart(), mLastSplitTimeCaptured);
+                    newSplit = new Split(getStart(), mLastSplitTimeCaptured, mSequenceNumber.getAndIncrement());
                 } else {
                     // Here we use the last split time captured.
                     long currentTime = ToolBox.currentTime();
-                    newSplit = new Split(mLastSplitTimeCaptured, currentTime);
+                    newSplit = new Split(getStart(), mLastSplitTimeCaptured, mSequenceNumber.getAndIncrement());
                     mLastSplitTimeCaptured = currentTime;
                 }
             }
