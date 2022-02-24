@@ -1,8 +1,10 @@
+/*
+ * Copyright © Microsoft Corporation. All rights reserved.
+ */
+
 package com.microsoft.snippet;
 
 import androidx.annotation.RestrictTo;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Split is a sub section of code within a capture( a contiguous/non-contiguous section of code).
@@ -16,7 +18,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public class Split {
 
-    private static final AtomicInteger SEQUENCE = new AtomicInteger(1);
     private final long mStarted;
     private final long mEnded;
     private final int mSequence;
@@ -24,10 +25,10 @@ public class Split {
 
     private String mInfo;
 
-    public Split(long start, long end) {
+    public Split(long start, long end, int seqNumber) {
         this.mStarted = start;
         this.mEnded = end;
-        this.mSequence = SEQUENCE.getAndIncrement();
+        this.mSequence = seqNumber;
     }
 
     public void setName(String name) {
