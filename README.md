@@ -20,6 +20,7 @@
 7. Designed to be thread safe & null safe  
 8. Rich API  
 9. Fully documented, just run java docs!  
+10. Thread safe
   
 # Vocabulary  
   
