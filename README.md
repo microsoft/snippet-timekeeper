@@ -4,7 +4,7 @@
 
 # Snippet  
   
-`Snippet` is an extensible android library to measure execution times of the code sections  in a way that does not compromise with the readability and can be shipped to production without any additional setup. New behaviours can be added in the library by extending Execution paths. 2 execution paths provided with the library are:
+`Snippet` is an extensible android library to measure execution times of the code sections  in a way that does not compromise with the readability and can be shipped to production in a way that the measurement code will be a no-op, without any additional setup. New behaviours can be added in the library by extending Execution paths. 2 execution paths provided with the library are:
  1. `MeasuredExecutionPath` - The code path the does the measurement code spans
  2. `ReleaseExecutionPath` - A no-op path (default path) that is usually installed in the release variants.  
 
@@ -20,6 +20,7 @@
 7. Designed to be thread safe & null safe  
 8. Rich API  
 9. Fully documented, just run java docs!  
+10. Thread safe
   
 # Vocabulary  
   
